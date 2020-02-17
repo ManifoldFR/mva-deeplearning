@@ -1,0 +1,96 @@
+\documentclass{article}
+
+\usepackage{mathtools,amssymb}
+\usepackage{subcaption}
+
+\newcommand\RR{\mathbb{R}}
+\newcommand\CC{\mathbb{C}}
+\newcommand\ZZ{\mathbb{Z}}
+\newcommand\NN{\mathbb{N}}
+\newcommand\PP{\mathbb{P}}
+\newcommand\TT{\mathbb{T}}
+\DeclarePairedDelimiter{\intinterv}{\llbracket}{\rrbracket}
+\newcommand{\scalemid}{\;\middle|\;}
+
+\renewcommand{\epsilon}{\varepsilon}
+
+\newcommand{\suchthat}{\mathrm{s.t.}}
+
+\DeclareMathOperator*{\argmin}{\mathrm{argmin}}
+\DeclareMathOperator*{\argmax}{\mathrm{argmax}}
+\DeclareMathOperator{\diag}{\mathrm{diag}}
+\DeclareMathOperator{\sgn}{\mathrm{sgn}}
+\DeclareMathOperator{\trace}{\mathrm{Tr}}
+\DeclareMathOperator{\EE}{\mathbb{E}}
+\newcommand{\der}{\operatorname{d\!}{}}
+
+\newcommand{\calA}{\mathcal{A}}
+\newcommand{\calC}{\mathcal{C}}
+\newcommand{\calN}{\mathcal{N}}
+\newcommand{\calM}{\mathcal{M}}
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\calS}{\mathcal{S}}
+\newcommand{\calT}{\mathcal{T}}
+\newcommand{\calX}{\mathcal{X}}
+\newcommand{\calL}{\mathcal{L}}
+
+\newcommand{\TD}{\mathsf{TD}}
+
+
+\begin{document}
+
+\section{Multilingual word embeddings}
+
+Let $X,Y$ be two matrices in $\RR^{d\times m}$ where $m$ is the size of the vocabulary. We seek to minimize
+\begin{equation}
+\begin{aligned}
+	&\min_W \| WX - Y \|_F^2  \\
+	\mathrm{s.t.} \ & W^TW = I_d
+\end{aligned}
+\end{equation}
+Since $\|WX\|_F = \|X\|_F$ for any $W \in O_d(\RR)$, this is equivalent to
+\[
+\begin{aligned}
+	&\max_W~ \langle WX,Y\rangle_F = \langle W, YX^T\rangle_F  \\
+	\mathrm{s.t.}\ & W^TW = I_d
+\end{aligned}
+\]
+Writing the SVD decomposition $YX^T = U\Sigma V^T$ with $U,V$ orthogonal and $\Sigma \geq 0$ diagonal, we have $\langle W,YX^T\rangle_F = \langle U^T WV, \Sigma \rangle_F $. The matrix $W' = U^TWV$ is also orthogonal, so by the Cauchy-Schwarz inequality
+\[
+	\langle W, YX^T\rangle = \langle W', \Sigma \rangle \leq \trace \Sigma
+\]
+with equality iff $W' = I_d$ i.e. $W = UV^T$.
+
+
+
+\section{Sentence classification with BoW}
+
+I trained the logistic regression model, with the regularization factor $C$ varying in $\{0.01, 0.02, 0.05, 0.1, 0.2, 0.3, 0.5\}$.
+
+Without IDF: best parameter is $C = 0.02$, train accuracy is $0.471$ and dev accuracy is $0.414$.
+
+With IDF: best parameter is $C=0.2$, train accuracy is $0.457$ and dev accuracy is $0.392$.
+
+
+
+\section{Deep learning models for classification}
+
+
+I used the categorical cross-entropy loss
+\begin{equation}
+	L(y,\hat{y}) =
+	-\sum_{i=1}^{n} y_i \log(\hat{y}_i)
+\end{equation}
+
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}{.49\linewidth}
+	\includegraphics[width=\linewidth]{images/loss.png}	
+	\end{subfigure}
+	\begin{subfigure}{.49\linewidth}
+	\includegraphics[width=\linewidth]{images/accuracy.png}	
+	\end{subfigure}
+\end{figure}
+
+
+\end{document}

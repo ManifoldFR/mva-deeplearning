@@ -1,1 +1,9 @@
+**/.ipynb_checkpoints
 nlp_project/data
+
+*.mp4
+*.h5
+*.log
+*.aux
+*.gz
+*.png
