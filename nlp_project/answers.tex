@@ -36,8 +36,13 @@
 
 \newcommand{\TD}{\mathsf{TD}}
 
+\title{MVA Deep Learning \\NLP mini-project}
+\author{Wilson Jallet}
+
 
 \begin{document}
+
+\maketitle
 
 \section{Multilingual word embeddings}
 
@@ -81,6 +86,7 @@ I used the categorical cross-entropy loss
 	L(y,\hat{y}) =
 	-\sum_{i=1}^{n} y_i \log(\hat{y}_i)
 \end{equation}
+where $(\hat{y}_i)_i$ is the output probability distribution of my network, computed from the output of the last fully-connected layer using the softmax activation function.
 
 \begin{figure}[h]
 	\centering
@@ -92,5 +98,7 @@ I used the categorical cross-entropy loss
 	\end{subfigure}
 \end{figure}
 
+
+For the other model, I used a 1D convolutional network operating on embedding space to extract features: using convolutions allows information to flow both forward and backwards.
 
 \end{document}
